@@ -117,5 +117,16 @@ The full Python exploit script is **not included** in this repository to prevent
 ---
 
 ## Repository Contents
+claude-image-hw-bypass/
+├── README.md # This overview
+├── methodology/ # Experimental procedure
+├── artifacts/ # LaTeX source, prompts
+│ ├── latex/ # Homework template (safe)
+│ └── prompts.txt # All prompts used
+├── results/ # Full conversation logs
+│ ├── condition-a/ # A1–A6 transcripts
+│ └── condition-b/ # B1–B6 transcripts
+├── media/ # Screenshots of interactions
+└── LICENSE
 
 
