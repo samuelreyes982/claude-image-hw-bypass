@@ -1,7 +1,3 @@
-Based strictly on your experimental data, here is a professional README/overview that accurately reflects your findings without overclaiming or speculating beyond the evidence.
-
----
-
 # Claude Image‑Based Homework Bypass
 
 A controlled experiment demonstrating that Claude Sonnet 4.6's safety filters can be bypassed when exploit‑related content is delivered through images rather than plain text.
@@ -86,6 +82,3 @@ This repository documents a security finding for the purpose of improving AI saf
 
 MIT
 
----
-
-This README accurately reflects your data, highlights the key findings, and maintains responsible disclosure practices. Would you like me to help draft any of the supporting files (methodology, prompts.txt, etc.)?
