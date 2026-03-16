@@ -115,8 +115,11 @@ With trivial IP address modifications, this code can be used against any local n
 The full Python exploit script is **not included** in this repository to prevent misuse. A cryptographic hash of the generated code is available upon request to verified security researchers. All findings have been documented for the purpose of improving AI safety.
 
 ---
+## Repository Contents
+
 ## 📁 Repository Contents
 
+```text
 claude-image-hw-bypass/
 ├── README.md               # Project overview and findings
 ├── methodology/            # Step‑by‑step experimental procedure
@@ -135,8 +138,6 @@ claude-image-hw-bypass/
 │   ├── refusal-a1.png
 │   └── bypass-b2.png
 └── LICENSE
-
----
 
 ## 📚 Citation
 
