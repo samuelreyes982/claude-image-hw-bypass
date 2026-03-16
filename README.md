@@ -117,33 +117,24 @@ The full Python exploit script is **not included** in this repository to prevent
 ---
 ## Repository Contents
 
-## 📁 Repository Contents
-
 ```text
-claude-image-hw-bypass/
-├── README.md               # Project overview and findings
-├── methodology/            # Step‑by‑step experimental procedure
-│   ├── 01-setup.md
-│   ├── 02-text-trials.md
-│   └── 03-image-trials.md
+.
 ├── artifacts/
-│   ├── latex/              # LaTeX homework template (safe to share)
-│   │   └── arp_homework.tex
-│   └── prompts.txt         # Exact prompts used in all trials
-├── results/
-│   ├── condition-a/        # Transcripts A1–A6
-│   └── condition-b/        # Transcripts B1–B6
-├── media/                  # Screenshots of model interactions
-│   ├── flickr-browser.png
-│   ├── refusal-a1.png
-│   └── bypass-b2.png
-└── LICENSE
-
-## 📚 Citation
-
+│   ├── images/
+│   │   ├── IMG_3323.JPG
+│   │   ├── IMG_3324.JPG
+│   │   ├── IMG_3325.JPG
+│   │   ├── IMG_3326.JPG
+│   │   ├── IMG_3327.JPG
+│   │   ├── IMG_3328.JPG
+│   │   └── IMG_3329.JPG
+│   ├── latex/
+│   │   ├── arp_homework_tex.pdf
+│   │   └── main-2.tex
+│   └── Prompts v2.txt
+└── README.md
+```
 If referencing this work, please use the following format:
 
-**Claude Image‑Based Homework Bypass (2026).** *Multimodal Safety Gap in Claude Sonnet 4.6.* GitHub repository. https://github.com/[your-username]/claude-image-hw-bypass
-
-
+Claude Image‑Based Homework Bypass (2026). Multimodal Safety Gap in Claude Sonnet 4.6. GitHub repository. https://github.com/samuelreyes/claude-image-hw-bypass
 
