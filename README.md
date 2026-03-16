@@ -68,7 +68,7 @@ The data supports the following conclusions:
 
 ##  Responsible Disclosure
 
-This repository documents a security finding for the purpose of improving AI safety. The full Python exploit script is **not included** to prevent misuse. A cryptographic hash of the generated code is available upon request to verified researchers.
+This repository documents a security finding for the purpose of improving AI safety. The full Python exploit script is **not included** to prevent misuse. 
 
 ##  Repository Contents
 
