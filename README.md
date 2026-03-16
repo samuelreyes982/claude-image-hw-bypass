@@ -115,18 +115,34 @@ With trivial IP address modifications, this code can be used against any local n
 The full Python exploit script is **not included** in this repository to prevent misuse. A cryptographic hash of the generated code is available upon request to verified security researchers. All findings have been documented for the purpose of improving AI safety.
 
 ---
+## 📁 Repository Contents
 
-## Repository Contents
 claude-image-hw-bypass/
-├── README.md # This overview
-├── methodology/ # Experimental procedure
-├── artifacts/ # LaTeX source, prompts
-│ ├── latex/ # Homework template (safe)
-│ └── prompts.txt # All prompts used
-├── results/ # Full conversation logs
-│ ├── condition-a/ # A1–A6 transcripts
-│ └── condition-b/ # B1–B6 transcripts
-├── media/ # Screenshots of interactions
+├── README.md               # Project overview and findings
+├── methodology/            # Step‑by‑step experimental procedure
+│   ├── 01-setup.md
+│   ├── 02-text-trials.md
+│   └── 03-image-trials.md
+├── artifacts/
+│   ├── latex/              # LaTeX homework template (safe to share)
+│   │   └── arp_homework.tex
+│   └── prompts.txt         # Exact prompts used in all trials
+├── results/
+│   ├── condition-a/        # Transcripts A1–A6
+│   └── condition-b/        # Transcripts B1–B6
+├── media/                  # Screenshots of model interactions
+│   ├── flickr-browser.png
+│   ├── refusal-a1.png
+│   └── bypass-b2.png
 └── LICENSE
+
+---
+
+## 📚 Citation
+
+If referencing this work, please use the following format:
+
+**Claude Image‑Based Homework Bypass (2026).** *Multimodal Safety Gap in Claude Sonnet 4.6.* GitHub repository. https://github.com/[your-username]/claude-image-hw-bypass
+
 
 
